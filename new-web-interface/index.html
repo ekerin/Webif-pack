@@ -589,20 +589,20 @@
                   </div>
 
                   <script id="switch_template" type="text/x-handlebars-template">
-                    <div class="panel panel-default">
+                    <div id="switch_{{name}}" class="panel panel-default">
                       <div class="panel-heading text-capitalize">
-                        {{name}}
+                        {{name}} <span class="switch_state"></span>
                       </div>
                       <div class="panel-body">
                         <div style="font-size: 14px;" class="row">
                           <div class="col-md-4">
-                            <button onclick="" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Turn {{name}} on using {{switch.input_on_command}}">Turn on</button>
+                            <button onclick="switchChange(1,'{{name}}');"  class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Turn {{name}} on using {{switch.input_on_command}}">Turn on</button>
                           </div>
                           <div class="col-md-4">
-                            <button onclick="" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Turn  {{name}} off using {{switch.input_off_command}}">Turn off</button>
+                            <button onclick="switchChange(0,'{{name}}');" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Turn  {{name}} off using {{switch.input_off_command}}">Turn off</button>
                           </div>
                           <div class="col-md-4">
-                            <button onclick="" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Read {{name}}'s status">Read</button>
+                            <button onclick="switchChange(undefined,'{{name}}');" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Read {{name}}'s status">Read</button>
                           </div>
                         </div>
                       </div>

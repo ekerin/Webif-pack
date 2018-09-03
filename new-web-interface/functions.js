@@ -74,6 +74,33 @@ function heatOff(code) {
   runCommand("M" + code + " S0", true);
 }
 
+function switchChange(state,switchName){
+var cmd;
+   if(state == 0){
+      cmd = machine.config.switch[switchName].input_off_command;
+   }else if(state == 1){
+      cmd = machine.config.switch[switchName].input_on_command;
+   }else{
+      runCommandCallback('switch '+switchName,handleSwitchChange);
+      return;
+   }
+   
+   runCommandCallback(cmd,function(data,xhr){
+      //upon response, ask what the current state of that switch is and update
+      runCommandCallback('switch '+switchName,handleSwitchChange)
+   });
+   
+}
+
+
+function handleSwitchChange(data,xhr){
+   var res = data.split('\n')[0].match(/^switch (.+?) is (.+)$/);
+   $('#switch_'+res[1]+' .switch_state').text(res[2]==0?'Off':'On');
+   
+}
+
+
+
 // A file was selected and is ready to be uploaded
 function handleFileSelect(evt) {
     var files = evt.target.files; // handleFileSelectist object
@@ -575,7 +602,7 @@ window.setInterval(function(){
     }
     // Handle position status
     var position_answer = answers[2].trim();
-    var cut = position_answer.match(/^<(.+?),MPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+),WPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)>/);
+    var cut = position_answer.match(/^<(.+?)\|MPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|WPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|F:([\d\.\-]+)>/);
     if( cut ){
       $("#machine_status").html(cut[1]);
       $("#machine_position_X").html(cut[2]);
