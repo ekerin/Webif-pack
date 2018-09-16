@@ -2,9 +2,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>Smoothie Web</title>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -115,21 +114,21 @@
               </symbol>
 
               <symbol id="JogRose" viewBox="20 -10 260 260">
-                <g id="HomeAll" onmouseup="runCommandSilent('G28')">
+                <g id="HomeAll" onmouseup="runCommandSilent(isGRBL()?'$H':'G28')">
                   <path class="std" d="M10 182.5 h-10 v57.5 h57.5 v-10 a 125,125 0 0,1 -47.5 -47.5 Z" fill="#f0f0f0">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
                   <use x="3" y="217" width="20" height="18" xlink:href="#HomeIcon" />
                 </g>
 
-                <g id="HomeX" onmouseup="runCommandSilent('G28 X0')">
+                <g id="HomeX" onmouseup="runCommandSilent(isGRBL()?'$HX':'G28 X0')">
                   <path class="std" d="M10 57.50 h-10 v-57.5 h57.5 v10 a 125,125 0 0,0 -47.5 47.5 Z" fill="Khaki">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
                   <use x="3" y="5" width="20" height="18" xlink:href="#HomeIcon" />
                   <text x="25" y="20" class="home"> X </text>
                 </g>
-                <g id="HomeY" onmouseup="runCommandSilent('G28 Y0')">
+                <g id="HomeY" onmouseup="runCommandSilent(isGRBL()?'$HY':'G28 Y0')">
                   <path class="std" d="M230 57.50 h10 v-57.5 h-57.5 v10 a 125,125 0 0,1 47.5 47.5 z" fill="SteelBlue">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
@@ -137,7 +136,7 @@
                   <text x="202" y="20" class="home"> Y </text>
                 </g>
 
-                <g id="HomeZ" onmouseup="runCommandSilent('G28 Z0')">
+                <g id="HomeZ" onmouseup="runCommandSilent(isGRBL()?'$HZ':'G28 Z0')">
                   <path class="std" d="M230 182.5 h10 v57.5 h-57.5 v-10 a 125,125 0 0,0 47.5 -47.5 z" fill="DarkSeaGreen">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>

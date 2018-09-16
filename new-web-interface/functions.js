@@ -308,7 +308,14 @@ function connected(url, version){
   // Log that connection was succesful
   $("#start_log").append("<li>Connection to " + url + " succesful</li>");
   $("#start_log").append("<li>Version : « " + version + "»</li>");
-
+  
+  if(version.match(/CNC Build/)){
+      machine.build='CNC';
+  }else{
+      machine.build='Normal';
+  }
+  
+  
   $("#ip_input").hide();
   // Save IP
   machine.url = url;
@@ -329,6 +336,16 @@ function connected(url, version){
   });
 }
 
+function isGRBL(){
+    if(String(machine.config['grbl-mode']).toLowerCase() == 'true'){
+       return true;
+    }else if(String(machine.config['grbl-mode']).toLowerCase() == 'false'){
+       return false;
+    }else{
+       return machine.build==='CNC';
+    }
+    
+}
 function parse_config(data){
   // Parse config file data
   $("#start_log").append("<li>Parsing configuration file</li>");
