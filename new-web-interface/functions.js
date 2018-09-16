@@ -571,7 +571,7 @@ function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["B","kB",
 window.setInterval(function(){
   if( machine.playing ){ return; }
   $("#playing_modal").modal('hide');
-  runCommandCallback("progress\nM105\nget status\n", function(data){
+  runCommandCallback("progress\nM105\nget state\nget status\n", function(data){
     // Progress status
     var answers = data.split('\n');
     var progress_answer = answers[0].trim();
@@ -617,8 +617,12 @@ window.setInterval(function(){
           $("#heat_value_" + letter).val(cut[2]);
         }
     }
+    // Handle modal state
+    var state_answer = answers[2].trim();
+    $('#modal_state').text(state_answer);
+    
     // Handle position status
-    var position_answer = answers[2].trim();
+    var position_answer = answers[3].trim();
     var cut = position_answer.match(/^<(.+?)\|MPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|WPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|F:([\d\.\-]+)>/);
     if( cut ){
       $("#machine_status").html(cut[1]);
@@ -629,7 +633,8 @@ window.setInterval(function(){
       $("#work_position_Y").html(cut[6]);
       $("#work_position_Z").html(cut[7]);
     }
-
+    
+  
 
 
   });
