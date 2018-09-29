@@ -571,18 +571,45 @@ function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["B","kB",
 window.setInterval(function(){
   if( machine.playing ){ return; }
   $("#playing_modal").modal('hide');
-  runCommandCallback("progress\nM105\nget state\nget status\n", function(data){
+  runCommandCallback("get status\nprogress\nM105\nget state\nget wcs\n", function(data){
     // Progress status
     var answers = data.split('\n');
-    var progress_answer = answers[0].trim();
-    if( progress_answer.match(/Not.currently.playing/) ){
+    // Handle position and overall status
+    var position_answer = answers[0].trim();
+    var cut = position_answer.match(/^<(.+?)\|MPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|WPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|F:([\d\.\-]+).*>/);
+    if( cut ){
+      $("#machine_status").text(cut[1]);
+      $("#machine_position_X").text(cut[2]);
+      $("#machine_position_Y").text(cut[3]);
+      $("#machine_position_Z").text(cut[4]);
+      $("#work_position_X").text(cut[5]);
+      $("#work_position_Y").text(cut[6]);
+      $("#work_position_Z").text(cut[7]);
+      
+      
+      $("#machine_status").removeClass($("#machine_status").attr("class"));
+      $("#machine_status").addClass(cut[1]);
+      
+      if(cut[1] === 'Alarm'){
+        machine.playing = false;
+        machine.alarm = true;
+        $("#alarm_clear").show();
+        return;
+      }else{
+        $('#alarm_clear').hide();
+      }
+      
+    }
+    
+    var progress_answer = answers[2].trim();
+    if( progress_answer.match(/Not.currently.playing/)  || progress_answer === 'ok'){
       machine.playing = false;
     }else{
       machine.playing = true;
       return;
     }
     // Temperature status
-    var temperature_answer = answers[1].trim();
+    var temperature_answer = answers[3].trim();
     var sensors = temperature_answer.split(/([A-Z])/);
     sensors.shift();
     for (i = 0; i < sensors.length; i=i+2) {
@@ -618,24 +645,21 @@ window.setInterval(function(){
         }
     }
     // Handle modal state
-    var state_answer = answers[2].trim();
+    var state_answer = answers[4].trim();
     $('#modal_state').text(state_answer);
     
-    // Handle position status
-    var position_answer = answers[3].trim();
-    var cut = position_answer.match(/^<(.+?)\|MPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|WPos:([\d\.\-]+),([\d\.\-]+),([\d\.\-]+)\|F:([\d\.\-]+)>/);
-    if( cut ){
-      $("#machine_status").html(cut[1]);
-      $("#machine_position_X").html(cut[2]);
-      $("#machine_position_Y").html(cut[3]);
-      $("#machine_position_Z").html(cut[4]);
-      $("#work_position_X").html(cut[5]);
-      $("#work_position_Y").html(cut[6]);
-      $("#work_position_Z").html(cut[7]);
-    }
-    
-  
 
+    
+    for(var l=6;l<19;l++){
+      var p = answers[l].trim().match(/\[(.+):(-?[0-9\.]+),(-?[0-9\.]+),(-?[0-9\.]+)\]/);
+      var k = p[1];
+      if(k == 'Tool Offset'){
+         k = 'Tool';
+      }
+      $("#"+k+"_position_X").html(p[2]);
+      $("#"+k+"_position_Y").html(p[3]);
+      $("#"+k+"_position_Z").html(p[4]);
+    }
 
   });
 }, 1000);
@@ -650,7 +674,7 @@ function loop_while_playing(){
       var answers = data.split('\n');
       var progress_answer = answers[0].trim();
       machine.playing_progress = progress_answer;
-      if( progress_answer.match(/Not.currently.playing/) ){
+      if( progress_answer.match(/Not.currently.playing/) || progress_answer === 'ok' ){
         machine.playing = false;
       }else{
         machine.playing = true;

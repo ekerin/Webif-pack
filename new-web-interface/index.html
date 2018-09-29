@@ -114,21 +114,21 @@
               </symbol>
 
               <symbol id="JogRose" viewBox="20 -10 260 260">
-                <g id="HomeAll" onmouseup="runCommandSilent(isGRBL()?'$H':'G28')">
+                <g id="HomeAll" onmouseup="runCommandSilent(isGRBL()?'G28.2':'G28')">
                   <path class="std" d="M10 182.5 h-10 v57.5 h57.5 v-10 a 125,125 0 0,1 -47.5 -47.5 Z" fill="#f0f0f0">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
                   <use x="3" y="217" width="20" height="18" xlink:href="#HomeIcon" />
                 </g>
 
-                <g id="HomeX" onmouseup="runCommandSilent(isGRBL()?'$HX':'G28 X0')">
+                <g id="HomeX" onmouseup="runCommandSilent(isGRBL()?'G28.2 X0':'G28 X0')">
                   <path class="std" d="M10 57.50 h-10 v-57.5 h57.5 v10 a 125,125 0 0,0 -47.5 47.5 Z" fill="Khaki">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
                   <use x="3" y="5" width="20" height="18" xlink:href="#HomeIcon" />
                   <text x="25" y="20" class="home"> X </text>
                 </g>
-                <g id="HomeY" onmouseup="runCommandSilent(isGRBL()?'$HY':'G28 Y0')">
+                <g id="HomeY" onmouseup="runCommandSilent(isGRBL()?'G28.2 Y0':'G28 Y0')">
                   <path class="std" d="M230 57.50 h10 v-57.5 h-57.5 v10 a 125,125 0 0,1 47.5 47.5 z" fill="SteelBlue">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
@@ -136,7 +136,7 @@
                   <text x="202" y="20" class="home"> Y </text>
                 </g>
 
-                <g id="HomeZ" onmouseup="runCommandSilent(isGRBL()?'$HZ':'G28 Z0')">
+                <g id="HomeZ" onmouseup="runCommandSilent(isGRBL()?'G28.2 Z0':'G28 Z0')">
                   <path class="std" d="M230 182.5 h10 v57.5 h-57.5 v-10 a 125,125 0 0,0 47.5 -47.5 z" fill="DarkSeaGreen">
                     <set attributeName="fill" to="orange" begin="mouseover" end="mouseout" />
                   </path>
@@ -370,38 +370,80 @@
               <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Status
             </div>
             <div class="col-md-4 pull-right">
-              <span id="machine_status"/>
+              <span id="machine_status"></span>
             </div>
+            <button  class="col-md-4 pull-right" id="alarm_clear" style="display:none" onclick="runCommandSilent('M999');">Clear</button>
           </div>
         </div>
         <div class="panel-body">
-        <div class="row">
-          <div class="col-md-4"> Axis</div>
-          <div class="col-md-4"> <b> Machine </b> </div>
-          <div class="col-md-4"> <b> Workpiece </b> </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-md-4"> X</div>
-            <samp class="col-md-4" id="machine_position_X"> </samp>
-            <samp class="col-md-4" id="work_position_X"> </samp>
-          </div>
-          <div class="row">
-            <div class="col-md-4"> Y</div>
-            <samp class="col-md-4" id="machine_position_Y"></samp>
-            <samp class="col-md-4" id="work_position_Y"></samp>
-          </div>
-          <div class="row">
-            <div class="col-md-4"> Z</div>
-            <samp class="col-md-4" id="machine_position_Z"></samp>
-            <samp class="col-md-4" id="work_position_Z"></samp>
-          </div>
-        </div>
+			<div class="row">
+			  <div class="col-md-3"> </div>
+			  <div class="col-md-3"> <b> X </b> </div>
+			  <div class="col-md-3"> <b> Y </b> </div>
+			  <div class="col-md-3"> <b> Z </b> </div>
+			</div>
+			<br/>
+			<div class="row">
+			  <div class="col-md-3"> Work</div>
+			  <samp class="col-md-3" id="work_position_X"> </samp>
+			  <samp class="col-md-3" id="work_position_Y"> </samp>
+			  <samp class="col-md-3" id="work_position_Z"> </samp>
+			</div>
+			<div class="row">
+			  <div class="col-md-3"> Machine</div>
+			  <samp class="col-md-3" id="machine_position_X"> </samp>
+			  <samp class="col-md-3" id="machine_position_Y"> </samp>
+			  <samp class="col-md-3" id="machine_position_Z"> </samp>
+			</div>
+			<div class="row">
+			
+			</div>
+			<div class="row wcs">
+			  <div class="col-md-3"> G54</div>
+			  <samp class="col-md-3" id="G54_position_X" onclick="runCommandSilent('G10 L20 P0 X0')"> </samp>
+			  <samp class="col-md-3" id="G54_position_Y" onclick="runCommandSilent('G10 L20 P0 Y0')"> </samp>
+			  <samp class="col-md-3" id="G54_position_Z" onclick="runCommandSilent('G10 L20 P0 Z0')"> </samp>
+			</div>
+			<div class="row wcs">
+			  <div class="col-md-3"> G55</div>
+			  <samp class="col-md-3" id="G55_position_X" onclick="runCommandSilent('G10 L20 P1 X0')"> </samp>
+			  <samp class="col-md-3" id="G55_position_Y" onclick="runCommandSilent('G10 L20 P1 Y0')"> </samp>
+			  <samp class="col-md-3" id="G55_position_Z" onclick="runCommandSilent('G10 L20 P1 Z0')"> </samp>
+			</div>
+			<div class="row wcs">
+			  <div class="col-md-3"> G28</div>
+			  <samp class="col-md-3" id="G28_position_X"> </samp>
+			  <samp class="col-md-3" id="G28_position_Y"> </samp>
+			  <samp class="col-md-3" id="G28_position_Z"> </samp>
+			</div>
+			<div class="row wcs">
+			  <div class="col-md-3"> G30</div>
+			  <samp class="col-md-3" id="G30_position_X"> </samp>
+			  <samp class="col-md-3" id="G30_position_Y"> </samp>
+			  <samp class="col-md-3" id="G30_position_Z"> </samp>
+			</div>
+			<div class="row wcs">
+			  <div class="col-md-3"> G92</div>
+			  <samp class="col-md-3" id="G92_position_X" onclick="runCommandSilent('G92 X0')"> </samp>
+			  <samp class="col-md-3" id="G92_position_Y" onclick="runCommandSilent('G92 Y0')"> </samp>
+			  <samp class="col-md-3" id="G92_position_Z" onclick="runCommandSilent('G92 Z0')"> </samp>
+			</div>
+			<div class="row">
+			
+			</div>			
+			<div class="row">
+			  <div class="col-md-3"> Tool</div>
+			  <samp class="col-md-3" id="Tool_position_X"> </samp>
+			  <samp class="col-md-3" id="Tool_position_Y"> </samp>
+			  <samp class="col-md-3" id="Tool_position_Z"> </samp>
+			</div>
+			
+        </div> 
+        
         <div class="row">
             <div class="col-md-12">
                <span id="modal_state"/>
             </div>
-               
         </div>
       </div>
 
@@ -560,8 +602,19 @@
 
 
 									<div class="panel panel-default">
-										<div class="panel-heading"> <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Probing</div>
-										<div class="panel-body">
+										<div class="panel-heading"> <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Probing   <input value="150" id="probe_distance" type="number" min="0"></div>
+										<div id="probing" class="panel-body">
+										<div style="font-size: 14px;" class="row">
+										  <div class="col-md-4">
+											<button onclick="runCommandSilent('G38.3 X'+$('#probe_distance').val())" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Probe X">Probe X</button>
+										  </div>
+										  <div class="col-md-4">
+											<button onclick="runCommandSilent('G38.3 Y'+$('#probe_distance').val())" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Probe X">Probe Y</button>
+										  </div>
+										  <div class="col-md-4">
+											<button onclick="runCommandSilent('G38.3 Z'+$('#probe_distance').val())" class="btn btn-default form-control btn-block" data-toggle="tooltip" data-placement="top" title="Probe X">Probe Z</button>
+										  </div>
+										</div>
 										</div>
 									</div>
 

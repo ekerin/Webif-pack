@@ -91,3 +91,14 @@ body {
   text-size: 14px;
 
 }
+
+
+.wcs samp:hover {
+    background-color: lightgreen;
+}
+
+#machine_status.alarm {
+	background-color: orangered;
+	color:white;
+	padding:5px;
+}
